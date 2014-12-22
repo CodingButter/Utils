@@ -2,7 +2,7 @@
 
 **Extends**: *String*;
 
-**Description**: This package will allow you to import
+**Description**: This package will allow you to import classes really easily from anywhere even within classes
 
 **Requirements**: jQuery and Set the ROOT Constant
 
