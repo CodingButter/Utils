@@ -28,7 +28,7 @@ Defining Root is simple. it can be done with one or both of these methods
     
     <script src="path/to/PackageImporter.js"></script>
 
-**Example Usage**: String.import(optional:String [ Seporated by commas the package to import ], optional:Element [ $("body") or $("#tag") or even getElementById("#tag") ])
+**Example Usage**: *String.import(optional:String [ Seporated by commas the package to import ], optional:Element [ $("body") or $("#tag") or even getElementById("#tag") ]);*
 	
 	"path.to.classfile".import()";  //Single Import
 	
