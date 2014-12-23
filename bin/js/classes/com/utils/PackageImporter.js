@@ -23,7 +23,6 @@
 *	"path.to.myclass".import("path.to.root","#tagsID"); //Custom ROOT and add to tag with Id;
 */
 
-
 (function(window){//Set up the anonymous function
 	String.prototype.import = function(_root,_element){//create prototype function to String Class 
 		if (typeof ROOT !== 'undefined' || typeof _root !== 'undefined') {//Check if a root is available
@@ -31,13 +30,28 @@
 			var pkgs = this.split(",");//Make into array splitting by commas
 			pkgs.forEach(function(pkg){//Loop through the array
 				pkg = pkg.trim();//Trim and spaces there may be
-				path = root + "." + pkg;//Add the root path
-				AppendPkg(path,_element);//Append to head or Element
+				if(pkg.Contains(".*")){
+					pkg = pkg.replace(".*","");
+					pkg = pkg.replace(new RegExp(root + ".","g"),"")
+					var pathclass = pkg + "." + pkg.split(".")[pkg.split(".").length-1];
+					AppendPkg(root + "." + pathclass);
+					var gc = new window.GetClasses();
+					var classes = gc.classes;
+					classes.forEach(function(e){
+						var cs = root + "." + pkg + "." + e;
+						cs.import();
+					});
+				}else{
+					pkg = pkg.replace(new RegExp(root + ".","g"),"");
+					path = root + "." + pkg;//Add the root path
+					AppendPkg(path,_element);//Append to head or Element
+				}
 			});	
 		}
 	}
 	
 	var AppendPkg = function(pkg,_element){//Now lets get Appending
+		
 		pkg = pkg.replace(/\./g,"/"); //first lets replace all periods with forward slashes to build a path
 		pkg = pkg + ".js"; //second lets add the .js extension.
 		var script = $("<script></script>");//now lets build our script element
@@ -61,7 +75,7 @@
 	}
 	
 	String.prototype.Contains = function(_string){//this is a quick prototype to check if a string contains a substring
-		return this.indexOf(_string) > -1; //if the position of the string is > -1 then it must exist so return true, else false;
+		return (this.indexOf(_string) > -1); //if the position of the string is > -1 then it must exist so return true, else false;
 	}
 	
 })(window);
