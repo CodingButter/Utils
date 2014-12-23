@@ -30,19 +30,17 @@
 			var pkgs = this.split(",");//Make into array splitting by commas
 			pkgs.forEach(function(pkg){//Loop through the array
 				pkg = pkg.trim();//Trim and spaces there may be
-				if(pkg.Contains(".*")){
-					pkg = pkg.replace(".*","");
-					pkg = pkg.replace(new RegExp(root + ".","g"),"")
-					var pathclass = pkg + "." + pkg.split(".")[pkg.split(".").length-1];
-					AppendPkg(root + "." + pathclass);
-					var gc = new window.GetClasses();
-					var classes = gc.classes;
-					classes.forEach(function(e){
-						var cs = root + "." + pkg + "." + e;
-						cs.import();
+				if(pkg.Contains(".*")){//Check if the Wild card has been added
+					pkg = pkg.replace(".*","");//remove the .* from string
+					var pathclass = pkg + "." + pkg.split(".")[pkg.split(".").length-1];//get the name of the last folder in path.
+					AppendPkg(root + "." + pathclass);//append the result of the root class file
+					var gc = new window.GetClasses();//create a new getclass instance
+					var classes = gc.classes;//retrieve all of the classes in the GetClasses instance loaded
+					classes.forEach(function(e){//loop through all classes we retrieved
+						var cs = pkg + "." + e;//create class path
+						cs.import();//import class;
 					});
-				}else{
-					pkg = pkg.replace(new RegExp(root + ".","g"),"");
+				}else{//if a specific class name was passed
 					path = root + "." + pkg;//Add the root path
 					AppendPkg(path,_element);//Append to head or Element
 				}
@@ -76,6 +74,11 @@
 	
 	String.prototype.Contains = function(_string){//this is a quick prototype to check if a string contains a substring
 		return (this.indexOf(_string) > -1); //if the position of the string is > -1 then it must exist so return true, else false;
+	}
+	
+	window.UpdateClasses = function(){
+		$.get(ROOT.replace(/\./g,"/") + "/updateClasses.php");
+		console.log("Classes Updated");
 	}
 	
 })(window);
