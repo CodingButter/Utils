@@ -48,7 +48,7 @@
 		}
 	}
 	
-	var AppendPkg = function(pkg,_element){//Now lets get Appending
+	function AppendPkg(pkg,_element){//Now lets get Appending
 		
 		pkg = pkg.replace(/\./g,"/"); //first lets replace all periods with forward slashes to build a path
 		pkg = pkg + ".js"; //second lets add the .js extension.

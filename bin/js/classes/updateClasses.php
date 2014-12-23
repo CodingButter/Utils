@@ -1,30 +1,20 @@
 <?php 
 
-function dirToArray($dir) { 
-   
+function dirToArray($dir) {
    $result = array(); 
-
    $cdir = scandir($dir); 
    foreach ($cdir as $key => $value) 
-   { 
-      if (!in_array($value,array(".",".."))) 
-      { 
-         if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) 
-         { 
-            $result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value); 
-         } 
-         else
-         { 
-            $result[] = $value; 
-         } 
-      } 
-   } 
-   
+      if (!in_array($value,array(".","..")))
+        if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) 
+			$result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value); 
+        elseif(strpos($value,".js")!=false)
+			$result[] = $value; 
    return $result; 
 } 
 $dirArray = dirToArray(dirname(__FILE__));
-$folder = dirname(__FILE__);
-loopthrough($dirArray,$folder);
+//file_put_contents("config.js","var CLASS_PATHS = \"". str_replace('"','\"',json_encode($dirArray))."\"");
+define('ROOTDIR',dirname(__file__));
+loopthrough($dirArray,ROOTDIR);
 function loopthrough($dirArray,$folder){
 	$files = Array();	
 	$farr= explode(DIRECTORY_SEPARATOR,$folder);
@@ -46,8 +36,9 @@ function loopthrough($dirArray,$folder){
 	}
 	$content = rtrim($content,",");
 	$content .= "\n);window.GetClasses = GetClasses;})(window)";
-	$tmp = Array("folder"=>$folder. DIRECTORY_SEPARATOR .$newFile,"content"=>$content);
-	print_r($tmp);
-	//file_put_contents($newFile,$content);
+	//$tmp = Array("folder"=>$folder. DIRECTORY_SEPARATOR .$newFile,"content"=>$content);
+	//print_r($tmp);
+	if($folder != ROOTDIR)file_put_contents($folder. DIRECTORY_SEPARATOR .$newFile,$content);
 }
+
 ?>
