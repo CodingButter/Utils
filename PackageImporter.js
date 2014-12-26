@@ -24,22 +24,23 @@
 */
 
 (function(window){//Set up the anonymous function
-	String.prototype.import = function(_root,_element){//create prototype function to String Class 
-		if (typeof ROOT !== 'undefined' || typeof _root !== 'undefined') {//Check if a root is available
-			if(typeof _root !== 'undefined')var root = _root;else var root = ROOT;//Set root to passed _root or to the Root Constant
+	String.prototype.import = function(_element,_root){//create prototype function to String Class 
+		if (typeof window.ROOT !== 'undefined' || typeof _root !== 'undefined') {//Check if a root is available
+			if(typeof _root !== 'undefined')var root = _root;else var root = window.ROOT;//Set root to passed _root or to the Root Constant
 			var pkgs = this.split(",");//Make into array splitting by commas
 			pkgs.forEach(function(pkg){//Loop through the array
 				pkg = pkg.trim();//Trim and spaces there may be
 				if(pkg.Contains(".*")){//Check if the Wild card has been added
 					pkg = pkg.replace(".*","");//remove the .* from string
 					var pathclass = pkg + "." + pkg.split(".")[pkg.split(".").length-1];//get the name of the last folder in path.
-					AppendPkg(root + "." + pathclass);//append the result of the root class file
+					var added = AppendPkg(root + "." + pathclass);//append the result of the root class file
 					var gc = new window.GetClasses();//create a new getclass instance
 					var classes = gc.classes;//retrieve all of the classes in the GetClasses instance loaded
 					classes.forEach(function(e){//loop through all classes we retrieved
 						var cs = pkg + "." + e;//create class path
 						cs.import();//import class;
 					});
+					
 				}else{//if a specific class name was passed
 					path = root + "." + pkg;//Add the root path
 					AppendPkg(path,_element);//Append to head or Element
@@ -49,11 +50,10 @@
 	}
 	
 	function AppendPkg(pkg,_element){//Now lets get Appending
-		
 		pkg = pkg.replace(/\./g,"/"); //first lets replace all periods with forward slashes to build a path
 		pkg = pkg + ".js"; //second lets add the .js extension.
-		var script = $("<script></script>");//now lets build our script element
-		script.attr("src",pkg);//and now add the source
+		var scriptstring = "<script src='" + pkg + "'></script>"
+		var script = $(scriptstring);//now lets build our script element
 		try{//we will catch the errors so all the classes get imported even if one isn't correct
 			if (typeof _element !== 'undefined'){//check to see if we passed in an element
 				var content = _element.html();// if we did lets get the current content of the element
@@ -62,6 +62,7 @@
 				}
 			}
 			else {//in this case no custom element was set so we will put it in the head
+				_element = $("head");
 				var content = $("head").html();//get the current content in head
 				if(content.Contains(script.attr("src"))==false){ //now we will make sure the it hasn't already been loaded by some other class
 					$("head").append(script);//if it hasn't then we can append it too the head
@@ -70,6 +71,7 @@
 		}catch(err){//lets catch the error
 			console.log(err); //and render it to the console.
 		}
+		return {"script":script,"_element":_element};
 	}
 	
 	String.prototype.Contains = function(_string){//this is a quick prototype to check if a string contains a substring
