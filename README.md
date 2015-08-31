@@ -8,7 +8,7 @@
 
 **Setup**: 
 
-Place classUpdeter.php in the root of your js class folder structure.
+Place classUpdater.php in the root of your js class folder structure.
 
 Defining Root is simple. it can be done with one or both of these methods
 
