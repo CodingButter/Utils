@@ -22,7 +22,7 @@ Defining Root is simple. it can be done with one or both of these methods
   
   Place Root in function call
   
-      "path.to.mysclasses.classfile".import({"root":"path.to.root");
+      "path.to.mysclasses.classfile".import({"root":"path.to.root"});
     
 ***Require And Set Root***  
   
