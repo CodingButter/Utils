@@ -13,7 +13,7 @@
 *				<script type="text/javascript"> const ROOT = "path.to.root"; </script>
 *				___________________________PROPPER____REQUIRE___________________________
 *				| <script type="text/javascript"> const ROOT = "path.to.root" </script> |
-*				| <script src="path/to/PackageImporter.js"></script>					|	
+*				| <script src="path/to/PackageImporter.js"></script>			|	
 *				-------------------------------------------------------------------------
 * Example Usage: String.import(optional:String[seporated by commas the package to import], optional:Element[jQuery element identifier such as $("body") or $("#tag")])
 * 	"path.to.classfile".import()";  //Single Import
